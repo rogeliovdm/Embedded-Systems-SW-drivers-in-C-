@@ -1,0 +1,31 @@
+#include <encoder_lib.h>
+
+const int encoderAddress = 0x3F; 
+
+void setup()
+{
+  Serial.begin(9600);
+  Wire.begin();
+}
+
+void loop() 
+{
+  // request 2 bytes 
+  Wire.requestFrom(encoderAddress, 2);
+
+  // check if data is available to read
+  if (Wire.available() >= 2) {
+    // read the high and low bytes
+    byte highByte = Wire.read();
+    byte lowByte = Wire.read();
+
+    // combine the bytes to get the encoder value
+    int encoderValue = (highByte << 8) | lowByte;
+
+    // print the encoder value to the Serial Monitor
+    Serial.print("Encoder Val: ");
+    Serial.println(encoderValue);
+
+    delay(1000); // Adjust delay
+  }
+}
